@@ -46,19 +46,23 @@ class Variable:
     def assign(self, value):
         if self.constant and self.assigned: 
             raise Exception("cannot reassign value of a constant")
+        value_length = len(value)
         match self.type:
             case Type.INT:
-                pass
+                self.value = int(value)
             case Type.SHORT:
-                pass
+                self.value = int(value)
             case Type.LONG:
-                pass
+                self.value = int(value)
             case Type.DOUBLE:
-                pass
-            case Type.CHAR:
-                pass
+                self.value = float(value)
             case Type.FLOAT:
-                pass
+                self.value = float(value)
+            case Type.CHAR:
+                escape = '\\' in value
+                if (not escape and value_length != 3) or (escape and value_length != 4):
+                    raise Exception("invalid character: {}".format(value))
+                self.value = value
             case Type.ENUM:
                 pass
             case Type.STRUCT:
@@ -66,9 +70,8 @@ class Variable:
             case Type.UNION:
                 pass
             case Type.VOID:
-                pass
+                self.value = value
 
-        self.value = value
         self.assigned = True
 
 variables = Stack() # dictionary keys map to variable class object
