@@ -36,6 +36,19 @@ class Value:
         self.type = type
         self.value = value # either the actual value or another Value type with ptr_depth-1
 
+    def infer_type(val: str):
+        val_len = len(val)
+        try:
+            val = float(val)
+        except ValueError:
+            if val.count("'") == 2 and ((not '\\' in val and val_len != 3) or ('\\' in val and val_len != 4)):
+                type = Type.CHAR
+                val = val.replace("'", "")
+        else:
+            type = Type.DOUBLE if val.count('.') == 1 else Type.INT
+
+        return Value(0, type, val)
+
 class Variable:
     def __init__(self, name: str, signed: bool, constant: bool, type: Type, ptr: bool, value=None):
         self.name = name
