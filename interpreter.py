@@ -31,11 +31,10 @@ class Type(Enum):
 NUMERIC_TYPE = [Type.INT, Type.DOUBLE]
 
 class Value:
-    def __init__(self, ptr: bool, ptr_depth: int, signed: bool, tag: Type, value):
-        self.ptr = ptr
-        self.ptr_depth = ptr_depth
-        self.tag = tag
-        self.value = value
+    def __init__(self, ptr_depth: int, type: Type, value):
+        self.ptr_depth = ptr_depth # zero if it is not a pointer
+        self.type = type
+        self.value = value # either the actual value or another Value type with ptr_depth-1
 
 class Variable:
     def __init__(self, name: str, signed: bool, constant: bool, type: Type, ptr: bool, value=None):
